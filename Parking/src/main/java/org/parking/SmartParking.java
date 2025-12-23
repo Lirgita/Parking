@@ -135,11 +135,16 @@ public class SmartParking {
         int allowedTime = 3; // allowed hours
 
         if (totalTime > allowedTime) {
-            fine = (totalTime - allowedTime) * 5.0;
+            if (type.equals("VIP")) {
+                fine = (totalTime - allowedTime) * 10.0; // VIP fine
+            } else {
+                fine = (totalTime - allowedTime) * 5.0;  // NORMAL fine
+            }
         } else {
             fine = 0.0;
         }
     }
+
 
     // Display single parking place info
     public void display() {

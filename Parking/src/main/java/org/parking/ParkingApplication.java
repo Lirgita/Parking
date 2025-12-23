@@ -10,9 +10,10 @@ public class ParkingApplication {
         SmartParking[] places = new SmartParking[5];
 
         for (int i = 0; i < places.length; i++) {
+            String type = (i < 2) ? "VIP" : "NORMAL";
             places[i] = new SmartParking(
                     i + 1,
-                    "NORMAL",
+                    type,
                     "FREE",
                     "-",
                     -1,
@@ -48,6 +49,10 @@ public class ParkingApplication {
                         System.out.print("Enter parking place number (1-5): ");
                         int placeNr = sc.nextInt();
 
+                        System.out.print("Choose parking type (1 = NORMAL, 2 = VIP): ");
+                        int typeChoice = sc.nextInt();
+                        String desiredType = (typeChoice == 2) ? "VIP" : "NORMAL";
+
                         System.out.print("Enter license plate: ");
                         String plate = sc.next();
 
@@ -59,17 +64,27 @@ public class ParkingApplication {
 
                         SmartParking p = places[placeNr - 1];
 
-                        // save status before parking
+
                         String statusBefore = p.getStatus();
 
                         p.parkCar(plate, entryHour);
 
-                        // check if parking actually happened
                         if (!statusBefore.equals(p.getStatus())) {
+                            p.setType(desiredType);
                             p.fillArray(placeNr - 1);
+
+                            if (desiredType.equals("VIP")) {
+                                System.out.println("You are parking in the VIP area.");
+                            } else {
+                                System.out.println("You are parking in the NORMAL area.");
+                            }
+
                             System.out.println("Vehicle parked successfully!");
+                        } else {
+                            System.out.println("Parking failed. Place is occupied.");
                         }
                         break;
+
 
                     case 2: // RELEASE PLACE
                         System.out.print("Enter parking place number (1-5): ");
@@ -88,7 +103,7 @@ public class ParkingApplication {
                         break;
 
                     case 3: // DISPLAY STATUS
-                        System.out.println("\n--- PARKING STATUS ---");
+                        System.out.println("\n--- PARKING STATUS (TYPE: VIP / NORMAL) ---");
                         SmartParking.displayParkingData();
                         break;
 
